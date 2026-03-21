@@ -13,7 +13,7 @@ keeping management ports secured. Automated Discord alerts were set up via webho
 and cron jobs to deliver live attack notifications every minute.
 
 
-## ⚙️ Specs
+## ⚙️ Specs & Security
 
 ### Cloud Server (DigitalOcean Droplet)
 | Component | Requirement |
@@ -83,6 +83,42 @@ simultaneously inside Docker containers. If you too would like to run these tpot
 ---
 
 
+---
+
+## 🔥 UFW Firewall Configuration
+
+To add an additional layer of security and control over the honeypot, 
+UFW was configured on the droplet. The goal 
+was to intentionally expose only the necessary ports to attract attackers 
+while keeping management ports secured.
+
+### Why UFW?
+Without a firewall every port on the server is completely uncontrolled. 
+UFW allowed full control over exactly what traffic could reach the server 
+— blocking everything by default and only allowing specific ports through.
+
+### Firewall Rules
+
+| Port | Protocol | Reason |
+|---|---|---|
+| **64295** | TCP | New SSH management port (T-Pot changes default port 22) |
+| **64297** | TCP | T-Pot Kibana dashboard access |
+| **22** | TCP | Intentionally exposed — attracts SSH brute force attackers into Cowrie trap |
+| **23** | TCP | Intentionally exposed — attracts Telnet attackers |
+| **80** | TCP | Intentionally exposed — attracts HTTP based attacks |
+| **443** | TCP | Intentionally exposed — attracts HTTPS based attacks |
+
+### Key Detail
+The default policy was set to **deny all incoming traffic** meaning 
+any port not explicitly listed above is completely blocked. This gave 
+full control over the attack surface while still allowing the honeypot 
+traps to function properly.
+
+### UFW Commands Used
+![UFW Commands](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-20%20223338.jpg?raw=true)
+
+### UFW Status
+![UFW Status](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-20%20223452.jpg?raw=true)
 
 
 
