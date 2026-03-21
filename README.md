@@ -55,7 +55,7 @@ Cloud Provider: For this project any cloud provided is good but I used digital o
 
 Pick Region: For the region I picked Toronto as I am closest to it
 
-![Region]()
+![Region](https://github.com/asadullah85/Honeypot-/blob/main/Media-Honeypot/Screenshot%202026-03-16%20005551.png?raw=true)
 
 
 Choosing an image: For this project I picked Unbuntu 24.4(lts) x 64. Digital ocean provides other images that would work fine for this porject like Debian, but since Unbuntu is drectly supported by Telekom security I chose to go with that.
