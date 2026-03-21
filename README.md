@@ -37,6 +37,17 @@ flowchart TD
     K --> L
 ```
 
+### Flow Overview
+- **Attackers** from the internet hit the **UFW Firewall** first
+- UFW only allows traffic through on specific ports — everything 
+  else is blocked by default
+- Allowed traffic reaches **T-Pot's honeypot services** running 
+  inside Docker containers (Cowrie, Honeytrap, Dionaea, Sentrypeer and more)
+- All attack data is logged and visualized in the **Kibana Dashboard**
+- Simultaneously the **discord_alert.sh** bash script runs every minute 
+  via cron job, extracting Cowrie logs and sending live attack 
+  notifications to **Discord**
+
 
 ## ⚙️ Specs & Security
 
