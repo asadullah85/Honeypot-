@@ -45,7 +45,7 @@ and cron jobs to deliver live attack notifications every minute.
 | **T-Pot Web Password** | Login to Kibana/Elastic dashboard | Min 8 chars, no special characters (T-Pot restriction) |
 | **Discord Webhook URL** | Authenticates alert script to Discord channel | Treat as a password — never share or commit to GitHub publicly |
 
-## 🛠️ Installation & Setup
+## 🛠️Setup
 
 ### Step 1 — Create Droplet/ VPS
 
@@ -69,6 +69,18 @@ Authentication Method: For the authentication method, SSH is a much safer option
 Improved Metrics Monitoring: For a server getting 1,800+ attacks an hour with 15+ tpot services running all at once inside Docker, it is very important to be able to see if the droplet is able to handle all of that attack load. This feature tracks network traffic, CPU usage, RAM consumption, and disk I/O.
 
 ![Metrics](https://github.com/asadullah85/Honeypot-/blob/main/Media-Honeypot/Screenshot%202026-03-16%20005802.jpg?raw=true)
+
+---
+
+## 🔗 T-Pot Repository
+
+This project uses the official T-Pot framework developed by Telekom Security.
+T-Pot is an all-in-one honeypot platform that runs 20+ honeypot services 
+simultaneously inside Docker containers. If you too would like to run these tpot services then here is the Github Repo link.
+
+**Official Repository:** [Telekom Security T-Pot](https://github.com/telekom-security/tpotce)
+
+---
 
 
 
