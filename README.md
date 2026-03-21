@@ -189,9 +189,8 @@ curl -H "Content-Type: application/json" \
 $WEBHOOK_URL
 ```
 ### How the Script Works
-You can find the follwoing code inside the discord_alert.sh aswell. The discord_alert.sh script works by pulling live logs directly from 
-the Cowrie Docker container and extracting two key pieces of information 
-.The total number of SSH login attempts and the IP address of the most 
+You can find the following code inside the `discord_alert.sh` as well. The discord_alert.sh script works by pulling live logs directly from 
+the Cowrie Docker container and extracting two key pieces of information: The total number of SSH login attempts and the IP address of the most 
 recent attacker. It then formats this data into a Discord embed card and 
 sends it to a Discord channel using a webhook URL via a curl HTTP request. 
 The webhook acts as a dedicated endpoint that Discord provides, allowing 
@@ -199,7 +198,7 @@ external services to post messages into a channel automatically without
 any manual input.
 
 ### Cron Job
-After running the bash script, while the discord alert does work you have to type `sudo bash /opt/discord_alert.sh` to manually trigger a discord alert. To automate this I decided to change the crond file. This file lives directly inside the Unbuntu droplet. Even after I close my laptop, I will still get alerts on the attacks I want. To do this simply I had to SSH into the root crontab. The cron job was added to root's crontab so it had full permissions 
+After running the bash script, while the discord alert does work you have to type `sudo bash /opt/discord_alert.sh` to manually trigger a Discord alert. To automate this I decided to change the crond file. This file lives directly inside the Ubuntu droplet. Even after I close my laptop, I will still get alerts on the attacks I want. To do this simply I had to SSH into the root crontab. The cron job was added to root's crontab so it had full permissions 
 to access the Cowrie Docker container logs without any authentication 
 issues. I SSH'd into the crontab using command; `sudo crontab e`. The five asterisks `* * * * *` represent minute, hour, day, 
 month and day of week respectively. Setting all five to `*` means 
