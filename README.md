@@ -208,4 +208,11 @@ To set this up, I first created a new Discord server and then created a dedicate
 
 The following screenshots show the setup flow and the final alert outputs in Discord
 
+<p align="center">
+  <img src="https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-23%20225422.png?raw=true" height="400" />
+  <img src="https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-23%20225749.png?raw=true" height="400" />
+</p>
 
+<p align="center">
+  <em>Real-time attack alerts on desktop (left) and mobile (right)</em>
+</p>
