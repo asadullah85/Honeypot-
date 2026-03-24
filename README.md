@@ -6,10 +6,10 @@ the honeypot ran multiple trap services simultaneously including Cowrie (fake SS
 Honeytrap, Sentrypeer, Dionaea, and more — capturing over 55,000 attacks within 
 24 hours of going live.
 
-Attack data was visualized in real time using an Elasticsearch/Kibana dashboard, 
+Attack data was visualized in real-time using an Elasticsearch/Kibana dashboard, 
 revealing attacker origins, targeted ports, and credential attempts from across 
 the globe. A UFW firewall was configured to control exposed attack surfaces while 
-keeping management ports secured. Automated Discord alerts were set up via webhook 
+keeping management ports secured. Automated Discord alerts were set up via a webhook 
 and cron jobs to deliver live attack notifications every minute.
 
 ## Server Architecture
@@ -49,14 +49,12 @@ flowchart TD
   notifications to **Discord**
 
 
-
-
 ## ⚙️ Specs & Security
 
 ### Cloud Server (DigitalOcean Droplet)
 | Component | Requirement |
 |---|---|
-**OS** | Ubuntu 24.04 LTS x64 |
+| **OS** | Ubuntu 24.04 LTS x64 |
 | **RAM** | 8 GB minimum |
 | **CPU** | 2-4 vCPUs |
 | **Storage** | 160 GB SSD |
@@ -71,7 +69,7 @@ flowchart TD
 | **Docker** | Runs all honeypot containers |
 | **UFW** | Firewall configuration |
 | **Cowrie** | Fake SSH/Telnet honeypot |
-| **Discord Webhook** | Real time attack alerts |
+| **Discord Webhook** | Real-time attack alerts |
 | **Cron** | Automated alert scheduling |
 | **Git** | Cloning T-Pot repository |
 
@@ -87,24 +85,24 @@ flowchart TD
 
 ### Step 1 — Create Droplet/ VPS
 
-Cloud Provider: For this project any cloud provided is good but I used digital ocean
+Cloud Provider: For this project, any cloud provider is fine, but I used DigitalOcean.
 
 ![DigitalOcean Droplet Setup](https://github.com/asadullah85/Honeypot-/blob/main/Media-Honeypot/Screenshot%202026-03-16%20011101.jpg?raw=true)
 
-Pick Region: For the region I picked Toronto as I am closest to it
+Pick Region: I picked Toronto because I am closest to it.
 
 ![Region](https://github.com/asadullah85/Honeypot-/blob/main/Media-Honeypot/Screenshot%202026-03-16%20005551.png?raw=true)
 
 
-Choosing an image: For this project I picked Unbuntu 24.4(lts) x 64. Digital ocean provides other images that would work fine for this porject like Debian, but since Unbuntu is drectly supported by Telekom security I chose to go with that.
+Choosing an image: For this project, I picked Ubuntu 24.04 LTS x64. DigitalOcean provides other images that would work fine for this project, like Debian, but since Ubuntu is directly supported by Telekom Security, I chose to go with it.
 
 ![Image](https://github.com/asadullah85/Honeypot-/blob/main/Media-Honeypot/Screenshot%202026-03-16%20005631.jpg?raw=true)
 
-Authentication Method: For the authentication method, SSH is a much safer option. In my case I was only going to run this droplet for around 32 hours and SSH is used for servers that run long term. Using password was quicker for the actual setup of the Honey pot and was better for analyzing real-time attack data. Thus, a strong password is very important to implement! 
+Authentication Method: SSH is a much safer option for authentication. In my case, I was only going to run this droplet for around 32 hours, and SSH is usually used for long-term servers. Using a password was quicker for the initial setup of the honeypot and worked better for analyzing real-time attack data. Thus, using a strong password is very important.
 
 ![Password](https://github.com/asadullah85/Honeypot-/blob/main/Media-Honeypot/Screenshot%202026-03-16%20005736.jpg?raw=true)
 
-Improved Metrics Monitoring: For a server getting 1,800+ attacks an hour with 15+ tpot services running all at once inside Docker, it is very important to be able to see if the droplet is able to handle all of that attack load. This feature tracks network traffic, CPU usage, RAM consumption, and disk I/O.
+Improved Metrics Monitoring: For a server getting 1,800+ attacks an hour with 15+ T-Pot services running all at once inside Docker, it is very important to see whether the droplet can handle that attack load. This feature tracks network traffic, CPU usage, RAM consumption, and disk I/O.
 
 ![Metrics](https://github.com/asadullah85/Honeypot-/blob/main/Media-Honeypot/Screenshot%202026-03-16%20005802.jpg?raw=true)
 
@@ -114,7 +112,7 @@ Improved Metrics Monitoring: For a server getting 1,800+ attacks an hour with 15
 
 This project uses the official T-Pot framework developed by Telekom Security.
 T-Pot is an all-in-one honeypot platform that runs 20+ honeypot services 
-simultaneously inside Docker containers. If you too would like to run these tpot services then here is the Github Repo link.
+simultaneously inside Docker containers. If you would like to run these T-Pot services too, here is the GitHub repo link.
 
 **Official Repository:** [Telekom Security T-Pot](https://github.com/telekom-security/tpotce)
 
@@ -158,29 +156,5 @@ traps to function properly.
 ### UFW Status
 ![UFW Status](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-20%20223452.jpg?raw=true)
 
-
-
-### `discord_alert.sh` (Discord Webhook Alert Agent)
-```bash
-#!/bin/bash
-WEBHOOK_URL="Example URL"
-
-ATTACKS=$(docker logs cowrie 2>&1 | grep "login attempt" | wc -l)
-LATEST_IP=$(docker logs cowrie 2>&1 | grep "login attempt" | tail -1 | grep -oP '\d+\.\d+\.\d+\.\d+' | head -1)
-
-curl -H "Content-Type: application/json" \
--d "{
-  \"embeds\": [{
-    \"title\": \"ALERT\",
-    \"color\": 16711680,
-    \"fields\": [
-      {\"name\": \"Total SSH Attempts\", \"value\": \"$ATTACKS\", \"inline\": true},
-      {\"name\": \"Latest Attacker IP\", \"value\": \"$LATEST_IP\", \"inline\": true}
-    ],
-    \"footer\": {\"text\": \"T-Pot HoneyPot Toronto\"}
-  }]
-}" \
-$WEBHOOK_URL
-```
 
 
