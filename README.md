@@ -157,8 +157,12 @@ traps to function properly.
 ![UFW Status](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-20%20223452.jpg?raw=true)
 
 
+## Discord Webhook Alerts
 
-### `discord_alert.sh` (Discord Webhook Alert Agent)
+To enable real-time attack monitoring, an automated Discord alert 
+system was built using a bash script, a Discord webhook, and a cron job.
+
+### `discord_alert.sh` 
 ```bash
 #!/bin/bash
 WEBHOOK_URL="Example URL"
@@ -180,5 +184,21 @@ curl -H "Content-Type: application/json" \
 }" \
 $WEBHOOK_URL
 ```
+### How the Script Works
+You can find the code above inside `discord_alert.sh`. The script works by pulling live logs directly from 
+the Cowrie Docker container and extracting two key pieces of information: the total number of SSH login attempts and the IP address of the most 
+recent attacker. It then formats this data into a Discord embed card and 
+sends it to a Discord channel using a webhook URL via a curl HTTP request. 
+The webhook acts as a dedicated endpoint that Discord provides, allowing 
+external services to post messages into a channel automatically without 
+any manual input.
 
+### Cron Job
+After running the bash script, the Discord alert works, but you have to type `sudo bash /opt/discord_alert.sh` to manually trigger an alert. To automate this, I changed the cron file. This file lives directly on the Ubuntu droplet. Even after I close my laptop, I still get alerts on the attacks I want. To do this, I SSH'd into the root crontab. The cron job was added to root's crontab so it had full permissions 
+to access the Cowrie Docker container logs without any authentication 
+issues. I opened the crontab using the command `sudo crontab -e`. The five asterisks `* * * * *` represent minute, hour, day, 
+month and day of week respectively. Setting all five to `*` means 
+run every minute, every hour, every day — essentially running 
+continuously in the background forever, or in my case, sending the newest attack every minute. It is worth noting that the first line is actually T-Pot's pre-set cron job that goes off at 1:12 AM; I wrote mine right underneath.
 
+![Cron](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-21%20012030.png?raw=true)
