@@ -4,7 +4,7 @@ A live honeypot deployed on a DigitalOcean cloud server to capture and analyze
 real-world attack behavior. Built using T-Pot (Telekom Security) on Ubuntu 24.04, 
 the honeypot ran multiple trap services simultaneously including Cowrie (fake SSH), 
 Honeytrap, Sentrypeer, Dionaea, and more — capturing over 55,000 attacks within 
-24 hours of going live.
+32 hours of going live.
 
 Attack data was visualized in real-time using an Elasticsearch/Kibana dashboard, 
 revealing attacker origins, targeted ports, and credential attempts from across 
