@@ -267,3 +267,27 @@ These services, all 20+ of them listen on different ports and simulate different
 
 **Dicompot and ConPot hits were concerning** even at low numbers. Probing DICOM (medical imaging) and ICS/SCADA protocols on a random DigitalOcean VPS confirms that threat actors are actively scanning for exposed industrial and healthcare systems on the public internet. These aren't targeted attacks — they're opportunistic mass scans, and they hit *everything.*
 
+---
+### 🌍 Geographic Origin of Attacks
+ 
+| Rank | Country | Unique IPs | Top Protocol |
+|---|---|---|---|
+| 1 | 🇺🇸 United States | 321 | SIP |
+| 2 | 🇧🇩 Bangladesh | 40 | SIP |
+| 3 | 🇳🇱 Netherlands | 11 | OTHER |
+| 4 | 🇹🇭 Thailand | 10 | SIP |
+| 5 | 🇫🇷 France | 9 | SIP |
+| 6 | 🇩🇪 Germany | 8 | OTHER |
+| 7 | 🇷🇴 Romania | 8 | OTHER |
+| 8 | 🇬🇧 United Kingdom | 8 | OTHER |
+| 9 | 🇸🇬 Singapore | 6 | OTHER |
+
+---
+
+![ATTACKDATA1](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-16%20001408.png?raw=true)
+
+The US leading is expected — it has the largest pool of compromised infrastructure globally. Botnet C2 traffic frequently routes through US-based cloud providers and residential ISPs, masking true operator origin. The Netherlands and Germany presence is consistent with Tor exit nodes and VPN hosting infrastructure commonly used for anonymization. Romania's recurring presence aligns with well-documented cybercriminal activity originating from Eastern Europe. Every other country was already kind fo expected to be here.
+ 
+**Bangladesh in second place was notable.** This is a known source of SIP scanning botnets, often operated by individuals engaged in VoIP fraud rather than state-level actors.
+
+
