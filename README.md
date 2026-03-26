@@ -272,15 +272,15 @@ These services, all 20+ of them listen on different ports and simulate different
  
 | Rank | Country | Unique IPs | Top Protocol |
 |---|---|---|---|
-| 1 | 🇺🇸 United States | 321 | SIP |
-| 2 | 🇧🇩 Bangladesh | 40 | SIP |
-| 3 | 🇳🇱 Netherlands | 11 | OTHER |
-| 4 | 🇹🇭 Thailand | 10 | SIP |
-| 5 | 🇫🇷 France | 9 | SIP |
-| 6 | 🇩🇪 Germany | 8 | OTHER |
-| 7 | 🇷🇴 Romania | 8 | OTHER |
-| 8 | 🇬🇧 United Kingdom | 8 | OTHER |
-| 9 | 🇸🇬 Singapore | 6 | OTHER |
+| 1 | United States | 321 | SIP |
+| 2 | Bangladesh | 40 | SIP |
+| 3 | Netherlands | 11 | OTHER |
+| 4 | Thailand | 10 | SIP |
+| 5 | France | 9 | SIP |
+| 6 | Germany | 8 | OTHER |
+| 7 | Romania | 8 | OTHER |
+| 8 | United Kingdom | 8 | OTHER |
+| 9 | Singapore | 6 | OTHER |
 
 ---
 
@@ -289,5 +289,34 @@ These services, all 20+ of them listen on different ports and simulate different
 The US leading is expected — it has the largest pool of compromised infrastructure globally. Botnet C2 traffic frequently routes through US-based cloud providers and residential ISPs, masking true operator origin. The Netherlands and Germany presence is consistent with Tor exit nodes and VPN hosting infrastructure commonly used for anonymization. Romania's recurring presence aligns with well-documented cybercriminal activity originating from Eastern Europe. Every other country was already kind fo expected to be here.
  
 **Bangladesh in second place was notable.** This is a known source of SIP scanning botnets, often operated by individuals engaged in VoIP fraud rather than state-level actors.
+
+---
+
+### Ports Targeted
+
+![ATTACKDATA1](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-25%20184711.png?raw=true)
+
+![ATTACKDATA1](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-25%20184838.png?raw=true)
+
+| Port | Service | Why Attackers Want It |
+|---|---|---|
+| **5060** | SIP (VoIP) | Toll fraud, PBX hijacking |
+| **22** | SSH | Brute-force, unauthorized shell access |
+| **8728** | MikroTik Winbox | Router exploitation, botnet recruitment |
+| **6379** | Redis | Unauthenticated RCE, cryptominer deployment |
+| **445** | SMB | EternalBlue-style exploits, lateral movement |
+| **80** | HTTP | Web app scanning |
+| **25** | SMTP | Open relay abuse, spam infrastructure |
+
+---
+
+The images and the attack data showed me something very important. Most people would think that the most common attack would be from **port 22** as bots trying to get unauthorized access to shell is a very dangerous yet common attack. However, Port 5060 was targeted the most which showed me how the internet actually works today. Even if a bot got shell acess to a server, it is not guaranteed that they will be able to escelate their priveledge within it. On port **5060**, if an attacker gets acceess to your SIP server they make premium phone calls, make money from those phone calls but you who owns the server pays the phone bill. Simply put, port 5060 can be more profitable to attackers. 
+
+**Port 8728 (MikroTik Winbox) was a standout.** MikroTik routers are widely deployed in ISPs and enterprises globally, and CVE-2018-14847 (an unauthenticated credential extraction bug) is still being actively exploited years after its disclosure. Attackers recruit compromised MikroTik devices into DDoS botnets and traffic-forwarding infrastructure.
+
+**Port 6379 (Redis)** being probed is a textbook move — an exposed Redis instance with no authentication allows arbitrary command execution. It's one of the most common initial access vectors for cryptomining malware (specifically XMRig). Finding this in the wild data confirms what threat intel reports consistently show.
+ 
+---
+
 
 
