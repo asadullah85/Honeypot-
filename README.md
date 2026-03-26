@@ -359,7 +359,30 @@ Amongst most of the attack data I discovered they all share one common thing, au
 
 ### 🧠 What I learned + key takeaways
 
----
+This was my first cybersecurtiy project. Before I could even write this Github README I had to learn how a honeypot works, evaluate different cloud providers, understand docker containers and learn how to write simple bash scripts and how to automate them. But once everything worked I was given real-time attack data that taught me more than any course, book or video.
 
-This was my first begginer cybersecurtiy project. Before I could even do the project I had to do alot of research and analasys on how honeypots work, what services to use, installation, cloud providers, docker and learning how to write simple bash scripts. I learned alot about how real-time attacks happen. There were some things that shocked me and some things which didn't but, also things I never knew existed. My biggest personal takeaway is; patience is the most valuable skill to have in building any project in Tech! When a concept doesn't make sense, when a specific docker file doesn't show up (in my case) things may seem hard and impossible in the moment but this is truly where you brain learns to grow. Nothing ever goes as planned but if you stick through it eventually, your problem will subside and you will improve. With that being said, I am very excited to build new projects in the future!
+Here are my technical takeaways:
+
+- **You will be attacked immediately.** No grace period. Within minutes 
+  of going live I already had hits on my Kibana dashboard. I had around 
+  2 attacks per second across all sensors. The internet is not a 
+  passive place.
+- **Most attacks are fully automated.** The credential lists, port 
+  probes, and malformed packets are running on botnet infrastructure 
+  24/7 with no human watching. Attackers set it and forget it.
+- **The biggest threat isn't always the most obvious one.** I expected 
+  SSH brute-forcing on port 22 to dominate. Port 5060 (SIP/VoIP) 
+  leading the data was something I never would have predicted and 
+  it completely changed how I think about attack surfaces.
+- **Some things shocked me, some didn't.** Blank passwords and 
+  `123456` still being tried everywhere? Not shocking. SIP toll fraud 
+  at 19,000 hits, a Ripple20 CVE probe, and bots specifically hunting 
+  for Solana validators and Redis instances? That I did not expect.
+- **Defensive security requires understanding offensive thinking.** 
+  To understand why Sentrypeer got hammered or why Redis is a target, 
+  I had to understand what the attacker actually gains. That shift in 
+  perspective thinking like an attacker to defend better is 
+  something I will carry into every project going forward.
+
+One final note. Whilst I did take away a lot of practical knowledge from this project. The biggest takeaway was a personal one; **patience is the most valuable thing in any tech project**. Sometimes things did not go my way. For example trying to automate the bash script in my case. Trying to find docker files, learning new commands, how docker containers work, how cron jobs work that all took me a lot of time. Eventually it was all worth it. Things may feel diffucult in the moment but that friction is what makes you grow and learn!
 
