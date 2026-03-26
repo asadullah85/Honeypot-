@@ -9,7 +9,7 @@ Honeytrap, Sentrypeer, Dionaea, and more — capturing over 55,000 attacks withi
 Attack data was visualized in real-time using an Elasticsearch/Kibana dashboard, 
 revealing attacker origins, targeted ports, and credential attempts from across 
 the globe. A UFW firewall was configured to control exposed attack surfaces while 
-keeping management ports secured. Automated Discord alerts were set up via a webhook 
+keeping management ports secured. Automated Discord alerts were set up via webhook 
 and cron jobs to deliver live attack notifications every minute.
 
 ## Server Architecture
@@ -38,6 +38,9 @@ flowchart TD
 ```
 
 ### Flow Overview
+
+Above is a visual diagram of how everything looks and below is the flow overview:
+
 - **Attackers** from the internet hit the **UFW Firewall** first
 - UFW only allows traffic through on specific ports — everything 
   else is blocked by default
@@ -81,9 +84,9 @@ flowchart TD
 | **T-Pot Web Password** | Login to Kibana/Elastic dashboard | Min 8 chars, no special characters (T-Pot restriction) |
 | **Discord Webhook URL** | Authenticates alert script to Discord channel | Treat as a password — never share or commit to GitHub publicly |
 
-## 🛠️Setup
+## My deployment
 
-### Step 1 — Create Droplet/ VPS
+### Create Droplet/VPS
 
 Cloud Provider: For this project, any cloud provider is fine, but I used DigitalOcean.
 
@@ -108,7 +111,7 @@ Improved Metrics Monitoring: For a server getting 1,800+ attacks an hour with 15
 
 ---
 
-## 🔗 T-Pot Repository
+## T-Pot Repository
 
 This project uses the official T-Pot framework developed by Telekom Security.
 T-Pot is an all-in-one honeypot platform that runs 20+ honeypot services 
@@ -116,12 +119,10 @@ simultaneously inside Docker containers. If you would like to run these T-Pot se
 
 **Official Repository:** [Telekom Security T-Pot](https://github.com/telekom-security/tpotce)
 
----
-
 
 ---
 
-## 🔥 UFW Firewall Configuration
+## UFW Firewall Configuration
 
 To add an additional layer of security and control over the honeypot, 
 UFW was configured on the droplet. The goal 
@@ -129,7 +130,7 @@ was to intentionally expose only the necessary ports to attract attackers
 while keeping management ports secured.
 
 ### Why UFW?
-Without a firewall every port on the server is completely uncontrolled. 
+Without a firewall, every port on the server is completely uncontrolled. 
 UFW allowed full control over exactly what traffic could reach the server 
 — blocking everything by default and only allowing specific ports through.
 
@@ -141,7 +142,7 @@ UFW allowed full control over exactly what traffic could reach the server
 | **64297** | TCP | T-Pot Kibana dashboard access |
 | **22** | TCP | Intentionally exposed — attracts SSH brute force attackers into Cowrie trap |
 | **23** | TCP | Intentionally exposed — attracts Telnet attackers |
-| **80** | TCP | Intentionally exposed — attracts HTTP based attacks |
+| **80** | TCP | Intentionally exposed — attracts HTTP based-attacks |
 | **443** | TCP | Intentionally exposed — attracts HTTPS based attacks |
 
 ### Key Detail
@@ -194,19 +195,14 @@ external services to post messages into a channel automatically without
 any manual input.
 
 ### Cron Job
-After running the bash script, the Discord alert works, but you have to type `sudo bash /opt/discord_alert.sh` to manually trigger an alert. To automate this, I changed the cron file. This file lives directly on the Ubuntu droplet. Even after I close my laptop, I still get alerts on the attacks I want. To do this, I SSH'd into the root crontab. The cron job was added to root's crontab so it had full permissions 
-to access the Cowrie Docker container logs without any authentication 
-issues. I opened the crontab using the command `sudo crontab -e`. The five asterisks `* * * * *` represent minute, hour, day, 
-month and day of week respectively. Setting all five to `*` means 
-run every minute, every hour, every day — essentially running 
-continuously in the background forever, or in my case, sending the newest attack every minute. It is worth noting that the first line is actually T-Pot's pre-set cron job that goes off at 1:12 AM; I wrote mine right underneath.
+After running the bash script, the Discord alert works, but you have to type sudo bash /opt/discord_alert.sh to manually trigger an alert. To automate this, I changed the cron file. This file lives directly on the Ubuntu droplet. Even after I close my laptop, I still get alerts on the attacks I want. To do this, I SSH'd into the root crontab. The cron job was added to root's crontab so it had full permissions to access the Cowrie Docker container logs without any authentication issues. I opened the crontab using the command sudo crontab -e. The five asterisks * * * * * represent minute, hour, day, month and day of week respectively. Setting all five to * means run every minute, every hour, every day — essentially running continuously in the background forever, or in my case, sending the newest attack every minute. It is worth noting that the first line is actually T-Pot's pre-set cron job that goes off at 1:12 AM; I wrote mine right underneath.
 
 ![Cron](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-21%20012030.png?raw=true)
 
 ## Discord Alerts
-To set this up, I first created a new Discord server and then created a dedicated channel for honeypot alerts. Inside that channel, I opened Channel Settings, navigated to **Integrations**, and created a new webhook named **messenger**. I then copied the webhook URL from Discord and pasted it into the `WEBHOOK_URL` field inside `discord_alert.sh`. This step must be completed before configuring the cron job; otherwise, the script can run on schedule but the alerts will not be delivered anywhere.
+I created a new Discord server, then created a new channel for honeypot alerts. In that channel, I opened Channel Settings, went to **Integrations**, and created a new webhook named **messenger**. I copied the webhook URL and pasted it into the `WEBHOOK_URL` field inside `discord_alert.sh`. Do this before setting up the cron job—otherwise the script can still run, but the messages won’t have anywhere to go.
 
-The following screenshots show the setup flow and the final alert outputs in Discord
+The following screenshots show the final alert outputs in Discord
 
 <p align="center">
   <img src="https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-23%20225422.png?raw=true" height="400" />
@@ -220,11 +216,11 @@ The following screenshots show the setup flow and the final alert outputs in Dis
 
 ---
 
-## Attack Data & Analasys
+## Attack Data & Analysis
 
-> **Observation window:** ~32 hours | **Deployment:** DigitalOcean VPS (Toronto region) | **Stack:** T-Pot CE on Ubuntu 22.04
+> **Observation window:** ~32 hours | **Deployment:** DigitalOcean VPS (Toronto region) | **Stack:** T-Pot CE on Ubuntu 24.04
 
-The honeypot was left internet facing for 32 hours with decoy ports. I used Elastic and Kibana dashbooards to moonitor attack data passively. Below is all of the data I have gatehred!
+The honeypot was left internet facing for 32 hours with decoy ports. I used Elastic and Kibana dashboards to monitor attack data passively. Below is all of the data I have gathered!
 
 ## General Overview of Attacks
 
@@ -237,10 +233,10 @@ The honeypot was left internet facing for 32 hours with decoy ports. I used Elas
 
 
 What surprised me the most about the attacks was how quickly they happened. I observed within minutes of setting up my honeypot, my Elastic dashboard had already picked up an attack. For further context I was getiing 2 attacks every second. The internet has around 4.3 billion ip addresses! Attackers dont manually search them by hand, they use bots. If you deploy a server with open ports like I did, it will be found **immediatly**. Search engines like **Shodan and Censy** use bots that crawl around the internet mapping every single corner 
-using tools like **MASSSCAN or NMAP**. Knowing this, it is important we implement strong passwords (you can see the password requriements under⚙️Specs & Security), Firewalls, rate limiting, reverse proxys and monitoring, just like my honeypot!
+using tools like **MASSSCAN or NMAP**. Knowing this, it is important we implement strong passwords (you can see the password requriements under ⚙️Specs & Security), Firewalls, rate limiting, reverse proxys and monitoring, just like my honeypot!
 
 
-![ATTACKDATA1](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-25%20163540.png?raw=true)
+![General](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-25%20163540.png?raw=true)
 
 ### Attacks by honeypot Services
 
@@ -284,7 +280,7 @@ These services, all 20+ of them listen on different ports and simulate different
 
 ---
 
-![ATTACKDATA1](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-16%20001408.png?raw=true)
+![Country](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-16%20001408.png?raw=true)
 
 The US leading is expected — it has the largest pool of compromised infrastructure globally. Botnet C2 traffic frequently routes through US-based cloud providers and residential ISPs, masking true operator origin. The Netherlands and Germany presence is consistent with Tor exit nodes and VPN hosting infrastructure commonly used for anonymization. Romania's recurring presence aligns with well-documented cybercriminal activity originating from Eastern Europe. Every other country was already kind fo expected to be here.
  
@@ -294,9 +290,9 @@ The US leading is expected — it has the largest pool of compromised infrastruc
 
 ### Ports Targeted
 
-![ATTACKDATA1](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-25%20184711.png?raw=true)
+![Ports Donuts](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-25%20184711.png?raw=true)
 
-![ATTACKDATA1](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-25%20184838.png?raw=true)
+![Ports Histogram](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-25%20184838.png?raw=true)
 
 | Port | Service | Why Attackers Want It |
 |---|---|---|
@@ -310,7 +306,7 @@ The US leading is expected — it has the largest pool of compromised infrastruc
 
 ---
 
-The images and the attack data showed me something very important. Most people would think the most common attack would be from **port 22** as bots trying to get unauthorized access to shell is a very dangerous yet common attack. However, Port 5060 was targeted the most which showed me how the internet actually works today. Even if a bot got shell acess to a server, it is not guaranteed that they will be able to escelate their priveledge within it. On port **5060**, if an attacker gets acceess to your SIP server they make premium phone calls, make money from those phone calls but you who owns the server pays the phone bill. Simply put, port 5060 can be more profitable to attackers. 
+The images and the attack data showed me something very important. Most people would think the most common attack would be from **port 22** as bots trying to get unauthorized access to shell is a very dangerous yet common attack. However, Port 5060 was targeted the most which showed me how the internet actually works today. Even if a bot got shell acess to a server, it is not guaranteed that they will be able to escelate their privilege within it. On port **5060**, if an attacker gets acceess to your SIP server they make premium phone calls, make money from those phone calls but you who owns the server pays the phone bill. Simply put, port 5060 can be more profitable to attackers. 
 
 **Port 8728 (MikroTik Winbox) was a standout.** MikroTik routers are widely deployed in ISPs and enterprises globally, and CVE-2018-14847 (an unauthenticated credential extraction bug) is still being actively exploited years after its disclosure. Attackers recruit compromised MikroTik devices into DDoS botnets and traffic-forwarding infrastructure.
 
@@ -322,7 +318,7 @@ The images and the attack data showed me something very important. Most people w
  
 The most attempted usernames and passwords captured by Cowrie reveal the exact wordlists attackers are running:
  
-![ATTACKDATA1](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-16%20001131.png?raw=true)
+![Credentials](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-16%20001131.png?raw=true)
 
 **Top Usernames Attempted:**
 `root` · `admin` · `administrator` · `ubuntu` · `user` · `anonymous` · `ftp` · `postgres` · `hadoop` · `elastic` · `jenkins` · `docker` · `oracle` · `solana`
@@ -341,7 +337,7 @@ The passwords and usernames used by the bots in my study are very common, howeve
 
 CVE & IDS Detections (Suricata)
 
-![ATTACK1](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-26%20163425.png?raw=true)
+![CVE](https://github.com/asadullah85/Honeypot/blob/main/Media-Honeypot/Screenshot%202026-03-26%20163425.png?raw=true)
 
 | Alert | Description | Count |
 |---|---|---|
@@ -353,7 +349,7 @@ CVE & IDS Detections (Suricata)
 
 Amongst most of the attack data I discovered they all share one common thing, automation. Most attacks used **automated scripting;** large amounts of scanning, weird behaviour like opening and closing connections and botnets sending unfinished packets. Suricta (my IDS) specifically noted this in both the picture above and the table. **truncated/malformed packets** is consistent with OS fingerprinting tools like `nmap` or `masscan` using crafted packets to identify services and OS versions without completing full TCP handshakes. This is standard pre-exploitation reconnaissance. In simple words random packets sent to see how my system acts.
 
-**CVE-2020-11900 (Ripple20)** was the most significant detection. The bot was likely trying to see if I have a specific vunrebillity to a script. This is a critical RCE vulnerability in the Treck embedded TCP/IP stack found in millions of IoT and industrial devices (printers, medical equipment, power grids). Catching even one probe for this CVE confirms that threat actors are scanning for vulnerable embedded systems at scale. It only hit once  but once is enough to know someone was looking.
+**CVE-2020-11900 (Ripple20)** was the most significant detection. The bot was likely trying to see if I have a specific vulnerability to a script. This is a critical RCE vulnerability in the Treck embedded TCP/IP stack found in millions of IoT and industrial devices (printers, medical equipment, power grids). Catching even one probe for this CVE confirms that threat actors are scanning for vulnerable embedded systems at scale. It only hit once  but once is enough to know someone was looking.
 
 ---
 
@@ -384,5 +380,9 @@ Here are my technical takeaways:
   perspective thinking like an attacker to defend better is 
   something I will carry into every project going forward.
 
-One final note. Whilst I did take away a lot of practical knowledge from this project. The biggest takeaway was a personal one; **patience is the most valuable thing in any tech project**. Sometimes things did not go my way. For example trying to automate the bash script in my case. Trying to find docker files, learning new commands, how docker containers work, how cron jobs work that all took me a lot of time. Eventually it was all worth it. Things may feel diffucult in the moment but that friction is what makes you grow and learn!
+One final note. Whilst I did take away a lot of practical knowledge from this project. The biggest takeaway was a personal one; **patience is the most valuable thing in any tech project**. Sometimes things did not go my way. For example trying to automate the bash script in my case. Trying to find docker files, learning new commands, how docker containers work, how cron jobs work that all took me a lot of time. Eventually however, it was all worth it. Things may feel diffucult in the moment but that friction is what makes you grow and learn!
+
+Excited to make more projects in the future!
+
+
 
