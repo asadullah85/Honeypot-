@@ -353,6 +353,13 @@ CVE & IDS Detections (Suricata)
 
 Amongst most of the attack data I discovered they all share one common thing, automation. Most attacks used **automated scripting;** large amounts of scanning, weird behaviour like opening and closing connections and botnets sending unfinished packets. Suricta (my IDS) specifically noted this in both the picture above and the table. **truncated/malformed packets** is consistent with OS fingerprinting tools like `nmap` or `masscan` using crafted packets to identify services and OS versions without completing full TCP handshakes. This is standard pre-exploitation reconnaissance. In simple words random packets sent to see how my system acts.
 
-**CVE-2020-11900 (Ripple20)** was the most significant detection. The bot was likely trying to see if I have a specific vunrebillity to a script.  This is a critical RCE vulnerability in the Treck embedded TCP/IP stack found in millions of IoT and industrial devices (printers, medical equipment, power grids). Catching even one probe for this CVE confirms that threat actors are scanning for vulnerable embedded systems at scale. It only hit once  but once is enough to know someone was looking.
- 
+**CVE-2020-11900 (Ripple20)** was the most significant detection. The bot was likely trying to see if I have a specific vunrebillity to a script. This is a critical RCE vulnerability in the Treck embedded TCP/IP stack found in millions of IoT and industrial devices (printers, medical equipment, power grids). Catching even one probe for this CVE confirms that threat actors are scanning for vulnerable embedded systems at scale. It only hit once  but once is enough to know someone was looking.
+
+---
+
+### 🧠 What I learned + key takeaways
+
+---
+
+This was my first begginer cybersecurtiy project. Before I could even do the project I had to do alot of research and analasys on how honeypots work, what services to use, installation, cloud providers, docker and learning how to write simple bash scripts. I learned alot about how real-time attacks happen. There were some things that shocked me and some things which didn't but, also things I never knew existed. My biggest personal takeaway is; patience is the most valuable skill to have in building any project in Tech! When a concept doesn't make sense, when a specific docker file doesn't show up (in my case) things may seem hard and impossible in the moment but this is truly where you brain learns to grow. Nothing ever goes as planned but if you stick through it eventually, your problem will subside and you will improve. With that being said, I am very excited to build new projects in the future!
 
